@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boletim Tecnológico</title>
+
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f7f7f7;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: linear-gradient(135deg, #333, #000);
+      color: white;
+      padding: 30px 0;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 {
+      font-size: 36px;
+      margin: 0;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .container {
+      width: 90%;
+      margin: auto;
+      padding: 20px 0;
+    }
+
+    .edition-info {
+      text-align: center;
+      font-size: 16px;
+      color: #666;
+      margin: 15px 0;
+    }
+
+    .section-title {
+      color: #333;
+      font-size: 28px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #333;
+      padding-bottom: 5px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    /* Configuração das seções para centralizar os cards */
+    .main-section, .innovation-section, .deu-ruim-section, .news-section {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center; /* Centraliza os cards horizontalmente */
+      gap: 20px;
+      margin: 30px 0;
+    }
+
+    .card {
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 300px; /* Define uma largura fixa para os cards */
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .card h2 {
+      font-size: 18px;
+      color: #333;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 20px 0;
+      margin-top: 30px;
+    }
+
+    footer p {
+      margin: 0;
+      font-size: 14px;
+    }
+
+    /* Estilos para os modais */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 5% auto;
+      padding: 20px;
+      border-radius: 12px;
+      width: 60%;
+      height: 80%;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    .modal-content img {
+      width: 80%;
+      height: auto;
+      margin: 20px auto;
+      display: block;
+      border-radius: 10px;
+    }
+
+    .modal-content p {
+      font-size: 16px;
+      line-height: 1.8;
+      color: #555;
+      text-align: justify;
+      margin-top: 20px;
+    }
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      color: #333;
+      font-size: 30px;
+      cursor: pointer;
+    }
+
+    /* Estilos responsivos */
+    @media (max-width: 1024px) {
+      .modal-content {
+        width: 80%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .modal-content {
+        width: 80%;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .main-section, .innovation-section, .deu-ruim-section, .news-section {
+        flex-direction: column;
+        align-items: center; /* Centraliza os cards em telas pequenas */
+      }
+
+      .card h2 {
+        font-size: 16px;
+      }
+
+      .card img {
+        height: auto;
+        margin-bottom: 10px;
+      }
+
+      .section-title {
+        font-size: 24px;
+      }
+
+      header h1 {
+        font-size: 28px;
+      }
+
+      .modal-content {
+        width: 95%;
+        height: 90%;
+        padding: 15px;
+      }
+
+      .modal-content h2 {
+        font-size: 20px;
+      }
+
+      .modal-content p {
+        font-size: 16px;
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Boletim Tecnológico</h1>
+  </header>
+
+  <div class="edition-info">
+    <p>Edição de 01/02/2025</p>
+  </div>
+
+  <!-- Seção: Inteligência Artificial -->
+  <h2 class="section-title">Inteligência Artificial</h2>
+  <div class="main-section">
+    <!-- Card 1 -->
+    <div class="card" id="card1">
+      <img src="https://img.odcdn.com.br/wp-content/uploads/2025/01/DeepSeek-Governo-da-China-1920x1080.jpg" 
+           alt="DeepSeek-R1: IA chinesa vence modelo da OpenAI em testes de raciocínio">
+      <h2>DeepSeek-R1: IA chinesa vence modelo da OpenAI em testes de raciocínio</h2>
+    </div>
+
+    <div class="card" id="card2">
+        <img src="https://img.odcdn.com.br/wp-content/uploads/2025/01/Destaque-DeepSeek-27-de-janeiro-1536x864.jpg" 
+             alt="DeepSeek lança IA que supera o DALL-E 3 em geração de imagens">
+        <h2>DeepSeek lança IA que supera o DALL-E 3 em geração de imagens</h2>
+      </div>
+
+      <div class="card" id="card3">
+        <img src="https://img.odcdn.com.br/wp-content/uploads/2025/01/Destaque-DeepSeek-29-de-janeiro-1920x1080.jpg" 
+             alt="DeepSeek: ‘Molho secreto’ da IA chinesa é revelado por pesquisadores da Apple">
+        <h2>DeepSeek: ‘Molho secreto’ da IA chinesa é revelado por pesquisadores da Apple</h2>
+      </div>
+
+      <div class="card" id="card4">
+        <img src="https://img.odcdn.com.br/wp-content/uploads/2025/01/IA-china--1920x1080.jpg" 
+             alt="Além da DeepSeek: outras empresas chinesas com IAs próprias">
+        <h2>Além da DeepSeek: outras empresas chinesas com IAs próprias</h2>
+      </div>
+  </div>
+
+
+  <!-- Seção: Inovação Tecnológica -->
+  <h2 class="section-title">Inovação Tecnológica</h2>
+  <div class="innovation-section">
+    <!-- Card 7 -->
+    <div class="card" id="card5">
+        <img src="https://img.odcdn.com.br/wp-content/uploads/2025/01/quantum-computing.jpg" 
+             alt="Novo computador quântico pode acelerar descobertas científicas">
+        <h2>Novo computador quântico pode acelerar descobertas científicas</h2>
+      </div>
+
+      <div class="card" id="card6">
+        <img src="https://files.tecnoblog.net/wp-content/uploads/2023/06/chatgpt-2_capa-1060x596.png" 
+             alt="ChatGPT terá acesso grátis a modelo de raciocínio o3-mini">
+        <h2>ChatGPT terá acesso grátis a modelo de raciocínio o3-mini</h2>
+      </div>
+
+      <div class="card" id="card7">
+        <img src="https://s2-g1.glbimg.com/VZ4SbDXwsh7BN0midpjv38Z-iD8=/0x0:1024x685/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2025/G/2/8c58xAQEij6bDhLCJSQQ/ap24212145033806.jpg" 
+             alt="Zuckerberg defende investimento pesado em IA mesmo após impacto do DeepSeek">
+        <h2>Zuckerberg defende investimento pesado em IA mesmo após impacto do DeepSeek</h2>
+      </div>
+
+      <div class="card" id="card8">
+        <img src="https://s2-techtudo.glbimg.com/ihJ0G8sXp_iFTV5wP6CIiLOZoO0=/0x0:695x378/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_08fbf48bc0524877943fe86e43087e7a/internal_photos/bs/2021/j/i/AGhbPKTKeDBiXg919s7A/2016-05-02-ashampoo-snap-20160428-12h17m02s-001-.jpg" 
+             alt="Tecnologia permite que tetraplégico controle drone virtual com a mente">
+        <h2>Tecnologia permite que tetraplégico controle drone virtual com a mente</h2>
+      </div>
+
+    
+  </div>
+
+
+  <!-- Seção: Deu Ruim -->
+  <h2 class="section-title">Deu Ruim</h2>
+  <div class="deu-ruim-section">
+    <!-- Card 13 -->
+    <div class="card" id="card9">
+        <img src="https://s2-g1.glbimg.com/ewxai-f56CoLPTngSg7F__FZoIA=/0x0:3000x2000/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2025/P/F/WKUU8VRDqAcz3KW0v9Cw/2025-01-27t125916z-1824444031-rc2cicawpv3t-rtrmadp-3-deepseek-markets.jpg" 
+             alt="Empresas de tecnologia perdem US$ 1 trilhão em valor de mercado com ‘ameaça’ de IA chinesa">
+        <h2>Empresas de tecnologia perdem US$ 1 trilhão em valor de mercado com ‘ameaça’ de IA chinesa</h2>
+      </div>
+
+      <div class="card" id="card10">
+        <img src="https://lifehacker.com/imagery/articles/01JJW20QN9Z1ZZ11ZRQJZSKFSX/hero-image.fill.size_1248x702.v1738258482.jpg" 
+             alt="DeepSeek, rival chinês do ChatGPT, diz ter sofrido ciberataque">
+        <h2>DeepSeek, rival chinês do ChatGPT, diz ter sofrido ciberataque</h2>
+      </div>
+
+      <div class="card" id="card11">
+        <img src="https://midias.em.com.br/_midias/jpg/2025/01/28/2b4d01b0_dcd0_11ef_a37f_eba91255dc3d-45440150.jpg" 
+             alt="DeepSeek: chip mais barato, autocensura, 'ameaça' aos EUA...">
+        <h2>DeepSeek: IA Chinesa Desafia EUA e Domina o Mercado Global</h2>
+      </div>
+
+      <div class="card" id="card12">
+        <img src="https://s2-g1.glbimg.com/JL_2elnBQX_ae3FdyCAoCUwcM3Q=/0x0:1024x682/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2025/s/j/EgWB8rQ8aFB42mBVVhbQ/000-36wh6xl.jpg" 
+             alt="OpenAI alega que DeepSeek usou ilegalmente dados do ChatGPT para treinar sua IA">
+        <h2>OpenAI alega que DeepSeek usou ilegalmente dados do ChatGPT para treinar sua IA</h2>
+      </div>
+  </div>
+
+
+  <!-- Seção: Notícias Variadas -->
+  <h2 class="section-title">Notícias Variadas</h2>
+  <div class="news-section">
+    <!-- Card 17 -->
+    <div class="card" id="card13">
+        <img src="https://img.odcdn.com.br/wp-content/uploads/2025/01/msicas-1920x1080.jpg" 
+             alt="Músicas passaram a ser menos complexas com o tempo?">
+        <h2>Músicas passaram a ser menos complexas com o tempo?</h2>
+      </div>
+
+      <div class="card" id="card14">
+        <img src="https://s2-oglobo.glbimg.com/crTIHP_AG8tPV2moE2NuJo6Xub8=/1200x/smart/filters:cover():strip_icc()/i.s3.glbimg.com/v1/AUTH_da025474c0c44edd99332dddb09cabe8/internal_photos/bs/2024/O/l/HSAyvfSEGvcjYwP64W0w/105278809.jpg" 
+             alt="Distração ou recurso pedagógico?">
+        <h2>Distração ou recurso pedagógico?</h2>
+      </div>
+
+      <div class="card" id="card15">
+        <img src="https://www.criptonoticias.com/wp-content/uploads/2023/07/riesgo-escanear-ojo-worldcoin-750x375.jpg" 
+             alt="Registro de íris por dinheiro: World mantém pagamentos, mesmo com ordem contrária do governo">
+        <h2>Registro de íris por dinheiro: World mantém pagamentos, mesmo com ordem contrária do governo</h2>
+      </div>
+
+    
+
+  </div>
+
+  <!-- ========================== 
+       MÓDULOS (MODAIS) 
+       ========================== -->
+
+<!-- Modal 1 -->
+<div id="modal1" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>DeepSeek-R1 Supera Modelo da OpenAI em Testes de Raciocínio</h2>
+        <img src="https://img.odcdn.com.br/wp-content/uploads/2025/01/DeepSeek-Governo-da-China-1920x1080.jpg" alt="Imagem representativa sobre o modelo DeepSeek-R1">
+        
+        <p>O laboratório chinês DeepSeek lançou o modelo de inteligência artificial DeepSeek-R1, que superou o modelo O1 da OpenAI em importantes benchmarks de raciocínio, como AIME, MATH-500 e SWE-bench Verified. O R1 já está disponível para uso comercial na plataforma Hugging Face, consolidando-se como uma alternativa acessível para desenvolvedores e pesquisadores.</p>
+        <p>Com 671 bilhões de parâmetros, o R1 é altamente robusto, mas versões mais leves permitem sua execução em hardwares comuns, como notebooks.</p>
+
+        <strong>Principais vantagens do DeepSeek-R1</strong><br>
+        <p>O DeepSeek-R1 apresenta alta precisão na verificação de fatos, reduzindo erros comuns. Seu desempenho é superior em áreas como ciência, física e matemática, além de oferecer preços competitivos na API em comparação com o modelo O1 da OpenAI.</p>
+        <p>A estratégia de acessibilidade já trouxe resultados expressivos, com milhões de downloads registrados.</p>
+
+        <strong>Regulamentações e limitações</strong><br>
+        <p>Desenvolvido na China, o DeepSeek-R1 está sujeito à regulamentação local. O modelo, por exemplo, bloqueia respostas a questões sobre temas politicamente sensíveis, como a autonomia de Taiwan. Essa censura levanta preocupações sobre o uso da IA no controle de informações e propaganda.</p>
+
+        <strong>Corrida global pela liderança em IA</strong><br>
+        <p>O DeepSeek-R1 se junta a outros projetos chineses, como os da Alibaba e Kimi, que também disputam espaço com os principais modelos americanos. Esse avanço demonstra o crescente protagonismo da China no cenário global de inteligência artificial, desafiando a supremacia dos Estados Unidos e acirrando a competição pela inovação tecnológica.</p>
+    </div>
+</div>
+
+<!-- Modal 2 -->
+<div id="modal2" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>DeepSeek Lança IA que Desafia o DALL-E 3 na Geração de Imagens</h2>
+        <img src="https://img.odcdn.com.br/wp-content/uploads/2025/01/Destaque-DeepSeek-27-de-janeiro-1536x864.jpg" alt="Imagem representativa sobre o modelo Janus-Pro da DeepSeek">
+        
+        <p>A DeepSeek, empresa chinesa de inteligência artificial, acaba de lançar o Janus-Pro, um novo modelo multimodal focado na análise e criação de imagens. Segundo a empresa, o Janus-Pro supera o DALL-E 3 da OpenAI em testes específicos de avaliação, consolidando-se como uma opção poderosa para desenvolvedores, artistas e pesquisadores.</p>
+
+        <strong>Destaques do Janus-Pro</strong><br>
+        <p>O Janus-Pro se destaca por sua multimodalidade, processando imagens e textos de forma integrada para garantir maior precisão na geração visual. Sua arquitetura autorregressiva permite a construção de imagens passo a passo, otimizando detalhes e realismo.</p>
+        <p>Além disso, o modelo apresenta alta eficiência, oferecendo desempenho superior mesmo com menos parâmetros, tornando-o mais leve e rápido. Outro diferencial é seu código aberto, disponível na Hugging Face sob licença MIT, permitindo modificações e adaptações.</p>
+
+        <strong>Desempenho e versões</strong><br>
+        <p>O modelo está disponível em versões que variam de 1 bilhão a 7 bilhões de parâmetros, com o Janus-Pro-7B se destacando em benchmarks como GenEval e DPG-Bench. Ele supera concorrentes como PixArt-alpha, Emu3-Gen e Stable Diffusion XL.</p>
+
+        <strong>Aplicações práticas</strong><br>
+        <p>O Janus-Pro é ideal para diversas aplicações, como criação visual para publicidade, design, jogos e arte digital. Ele também pode ser utilizado na edição de imagens, incluindo restauração de fotos, remoção de objetos e aprimoramentos visuais.</p>
+        <p>Outra aplicação relevante é a análise de imagens, permitindo reconhecimento de objetos, detecção de emoções e classificação de conteúdo.</p>
+
+        <strong>Expansão no mercado de IA</strong><br>
+        <p>Com essa nova aposta, a DeepSeek se firma como um player competitivo no mercado de inteligência artificial, desafiando gigantes como OpenAI e Meta.</p>
+    </div>
+</div>
+
+<!-- Modal 3 -->
+<div id="modal3" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>DeepSeek: O Segredo da IA Chinesa Revelado por Pesquisadores da Apple</h2>
+        <img src="https://img.odcdn.com.br/wp-content/uploads/2025/01/Destaque-DeepSeek-29-de-janeiro-1920x1080.jpg" alt="Imagem representativa sobre o modelo DeepSeek e suas inovações">
+        
+        <p>O DeepSeek surpreendeu o mercado de inteligência artificial ao demonstrar desempenho comparável ao ChatGPT, da OpenAI, com um custo significativamente menor de desenvolvimento. Pesquisadores da Apple analisaram o modelo e revelaram seu diferencial: o uso inteligente da esparsidade na rede neural.</p>
+
+        <strong>O que é esparsidade e como a DeepSeek a utiliza?</strong><br>
+        <p>Esparsidade é uma técnica de otimização em deep learning que reduz a carga computacional de um modelo sem comprometer seu desempenho. No caso da DeepSeek, isso é feito ao desativar partes da rede neural que não afetam diretamente os resultados.</p>
+        <p>Essa abordagem permite que apenas os parâmetros essenciais do modelo sejam ativados, reduzindo custos e otimizando a eficiência. Mesmo com menos recursos, o DeepSeek mantém ou supera o desempenho de concorrentes.</p>
+
+        <strong>Otimizações da DeepSeek</strong><br>
+        <p>O modelo utiliza a atenção latente multi-cabeça, uma técnica que melhora o uso da memória, otimizando o armazenamento e processamento de prompts. Isso garante maior eficiência na geração de respostas e na compreensão de contexto.</p>
+
+        <strong>Impacto e futuro da esparsidade na IA</strong><br>
+        <p>A descoberta sugere que outras empresas podem adotar a mesma abordagem para criar modelos de inteligência artificial mais eficientes e acessíveis. Com essa inovação, a DeepSeek reforça sua posição como um dos principais players na corrida global pela inteligência artificial.</p>
+    </div>
+</div>
+
+<!-- Modal 4 -->
+<div id="modal4" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Além da DeepSeek: A Corrida Chinesa pela Liderança em IA</h2>
+        <img src="https://img.odcdn.com.br/wp-content/uploads/2025/01/IA-china--1920x1080.jpg" alt="Imagem representativa sobre o avanço da IA na China">
+        
+        <p>A China tem investido fortemente no desenvolvimento de inteligência artificial, com empresas de grande porte e startups emergentes competindo diretamente com gigantes dos EUA, como OpenAI, Google e Meta. Além da DeepSeek, que ganhou destaque recente com modelos eficientes e de baixo custo, outras companhias chinesas estão se consolidando no setor.</p>
+
+        <strong>Gigantes da tecnologia chinesa e seus modelos de IA</strong><br>
+        <p>Diversas empresas chinesas estão na vanguarda da inteligência artificial:</p>
+        <ul>
+            <li><strong>Alibaba</strong> – Criadora do chatbot Qwen, que inclui o modelo Qwen2.5-Max, considerado competitivo globalmente.</li>
+            <li><strong>Tencent</strong> – Desenvolveu o Hunyuan, comparável ao Llama 3.1 da Meta, integrado ao WeChat, plataforma amplamente utilizada na China.</li>
+            <li><strong>Baidu</strong> – Pioneira com o Ernie Bot, que já conta com mais de 430 milhões de usuários.</li>
+            <li><strong>ByteDance</strong> – Controladora do TikTok, oferece o chatbot Doubao, com cerca de 60 milhões de usuários mensais.</li>
+        </ul>
+
+        <strong>Novos players ganhando espaço</strong><br>
+        <p>Além das gigantes do setor, novas empresas estão conquistando relevância:</p>
+        <ul>
+            <li><strong>DeepSeek</strong> – Criadora do Janus-Pro, rival do DALL·E 3, e do DeepSeek-R1, modelo avançado de raciocínio.</li>
+            <li><strong>StepFun</strong> – Apoiada pela Tencent e pelo governo de Xangai, seu modelo está entre os 10 melhores do mundo.</li>
+            <li><strong>Moonshot AI</strong> – Desenvolvedora do chatbot Kimi e do modelo k1.5, que superou GPT-4o e Claude 3.5 em benchmarks.</li>
+            <li><strong>MiniMax</strong> – Criadora do chatbot Talkie e de modelos de código aberto comparáveis ao GPT-4o.</li>
+            <li><strong>Zhipu</strong> – Desenvolveu o gerador de vídeos Ying, similar ao Sora da OpenAI, mas foi alvo de restrições dos EUA por suspeitas de uso militar.</li>
+        </ul>
+
+        <strong>Competição global e o futuro da IA</strong><br>
+        <p>O avanço da China na corrida da inteligência artificial desafia a hegemonia americana e intensifica a disputa tecnológica global. Com modelos cada vez mais sofisticados, a tendência é que essas empresas ampliem sua influência e entrem no mercado internacional.</p>
+    </div>
+</div>
+
+<!-- Modal 5 -->
+<div id="modal5" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Computador Quântico Fotônico Pode Acelerar Descobertas Científicas</h2>
+        <img src="https://img.odcdn.com.br/wp-content/uploads/2025/01/quantum-computing.jpg" alt="Imagem representativa sobre o computador quântico fotônico Aurora">
+        
+        <p>A startup canadense Xanadu desenvolveu um computador quântico fotônico inovador, que aposta em um design modular e no uso de luz para processar dados. Essa abordagem pode tornar a computação quântica mais escalável, impulsionando avanços em descobertas científicas, inteligência artificial e desenvolvimento de novos medicamentos.</p>
+
+        <strong>Destaques do Aurora, o novo computador quântico</strong><br>
+        <p>O Aurora se diferencia por utilizar qubits fotônicos, que armazenam e processam informações por meio de partículas de luz. Seu design modular permite uma expansão simplificada, utilizando racks de servidores interconectados.</p>
+        <p>Além disso, os qubits fotônicos são menos sensíveis ao ruído ambiental, garantindo maior estabilidade na computação quântica. A conectividade avançada do Aurora possibilita sua integração por fibras ópticas convencionais, facilitando a criação de uma internet quântica.</p>
+        <p>Outro diferencial importante é sua operação em temperatura ambiente, ao contrário dos modelos supercondutores que exigem resfriamento extremo. Isso reduz significativamente os custos e a complexidade da infraestrutura.</p>
+
+        <strong>Futuro dos data centers quânticos</strong><br>
+        <p>A Xanadu planeja construir um centro de dados quântico até 2029, com milhares de servidores e um milhão de unidades de processamento. O objetivo é criar um sistema altamente conectado, permitindo o uso da computação quântica em larga escala.</p>
+        <p>Entretanto, desafios ainda precisam ser superados. A correção de erros e a redução da perda de luz são pontos críticos para tornar essa tecnologia viável para aplicações práticas.</p>
+
+        <strong>A corrida pela computação quântica fotônica</strong><br>
+        <p>Com empresas como PsiQuantum (EUA) e Quandela (França) também apostando na computação quântica fotônica, a disputa pela próxima revolução tecnológica está em pleno andamento.</p>
+    </div>
+</div>
+
+<!-- Modal 6 -->
+<div id="modal6" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>OpenAI Lança o3-Mini e Libera Acesso Gratuito à IA de Raciocínio Lógico</h2>
+        <img src="https://files.tecnoblog.net/wp-content/uploads/2023/06/chatgpt-2_capa-1060x596.png" alt="Imagem representativa sobre o modelo o3-mini da OpenAI">
+        
+        <p>A OpenAI anunciou o lançamento do o3-mini, um novo modelo de inteligência artificial focado em raciocínio lógico, com melhor desempenho em ciências, matemática e programação. Pela primeira vez, usuários do plano gratuito do ChatGPT poderão testar essa tecnologia, acessando-a pelo botão “Reason”.</p>
+        <p>A novidade surge em um momento de intensa concorrência no setor, após o sucesso do DeepSeek R1, modelo chinês que popularizou o acesso gratuito à IA de raciocínio.</p>
+
+        <strong>Principais melhorias do o3-mini</strong><br>
+        <p>O novo modelo apresenta uma série de avanços em relação às versões anteriores:</p>
+        <ul>
+            <li><strong>Menos erros</strong> – Redução de 39% na frequência de grandes erros em comparação ao o1-mini.</li>
+            <li><strong>Respostas mais rápidas</strong> – Melhor eficiência, com uma média de 24% mais velocidade.</li>
+            <li><strong>Acesso gratuito</strong> – Usuários do plano grátis poderão experimentar o modelo com algumas limitações.</li>
+            <li><strong>Preços mais baixos para API</strong> – Redução de 63% no custo de uso via API, agora a US$ 1,10 por milhão de tokens de entrada e US$ 4,40 de saída.</li>
+        </ul>
+        <p>Apesar da redução, os preços da OpenAI ainda são superiores aos do DeepSeek, que cobra US$ 0,14 por milhão de tokens de entrada e US$ 2,19 de saída.</p>
+
+        <strong>Impacto no mercado de IA</strong><br>
+        <p>A decisão de liberar o o3-mini para usuários gratuitos e reduzir preços mostra que a OpenAI sente a pressão da concorrência, especialmente da DeepSeek, que rapidamente conquistou milhões de usuários.</p>
+        <p>Com a disputa entre os modelos de IA cada vez mais acirrada, o beneficiado final é o usuário, que ganha mais opções e acesso a tecnologias avançadas sem custo.</p>
+    </div>
+</div>
+
+<!-- Modal 7 -->
+<div id="modal7" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Zuckerberg Defende Altos Investimentos em IA Apesar do Impacto do DeepSeek</h2>
+        <img src="https://s2-g1.glbimg.com/VZ4SbDXwsh7BN0midpjv38Z-iD8=/0x0:1024x685/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2025/G/2/8c58xAQEij6bDhLCJSQQ/ap24212145033806.jpg" alt="Imagem representativa sobre os investimentos em IA da Meta">
+        
+        <p>O CEO da Meta, Mark Zuckerberg, reafirmou que a empresa continuará investindo pesado em inteligência artificial, mesmo após a forte reação do mercado ao DeepSeek, chatbot chinês que se destacou por sua eficiência e baixo custo.</p>
+        <p>O DeepSeek abalou o setor de tecnologia ao se mostrar uma alternativa viável e acessível a modelos ocidentais como ChatGPT e Meta AI, causando uma queda de US$ 1 trilhão no valor de mercado das big techs.</p>
+
+        <strong>Meta mantém aposta em infraestrutura de IA</strong><br>
+        <p>A Meta segue apostando em investimentos massivos na área de inteligência artificial:</p>
+        <ul>
+            <li><strong>Investimento bilionário</strong> – A Meta pretende gastar até US$ 65 bilhões em IA em 2025.</li>
+            <li><strong>Comparação com DeepSeek</strong> – Enquanto isso, o DeepSeek afirma ter sido treinado com apenas US$ 6 milhões.</li>
+            <li><strong>Estratégia de longo prazo</strong> – Zuckerberg acredita que um investimento robusto em infraestrutura será uma vantagem estratégica no futuro.</li>
+        </ul>
+
+        <strong>Investidores questionam modelo das big techs</strong><br>
+        <p>O custo reduzido do DeepSeek gerou dúvidas sobre a sustentabilidade dos altos gastos das gigantes de tecnologia. Segundo analistas, o impacto na Bolsa de Nova York mostrou que o mercado espera mais retorno financeiro das big techs em suas apostas em IA.</p>
+        <p>A Meta, no entanto, acredita que continuará adaptando sua estratégia à medida que novas tecnologias, como o DeepSeek, surgem.</p>
+    </div>
+</div>
+
+<!-- Modal 8 -->
+<div id="modal8" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Tetraplégico Controla Drone Virtual com a Mente Usando Interface Cérebro-Computador</h2>
+        <img src="https://s2-techtudo.glbimg.com/ihJ0G8sXp_iFTV5wP6CIiLOZoO0=/0x0:695x378/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_08fbf48bc0524877943fe86e43087e7a/internal_photos/bs/2021/j/i/AGhbPKTKeDBiXg919s7A/2016-05-02-ashampoo-snap-20160428-12h17m02s-001-.jpg" alt="Imagem representativa sobre a interface cérebro-computador e controle de drone">
+        
+        <p>Pesquisadores desenvolveram uma interface cérebro-computador (BCI) que permitiu a um homem tetraplégico controlar um drone virtual apenas com o pensamento. O sistema interpreta sinais cerebrais associados aos dedos, mesmo que ele não consiga movê-los fisicamente, transformando-os em comandos precisos para navegação.</p>
+        <p>Publicado na <em>Nature Medicine</em>, o estudo destaca o potencial dessa tecnologia para aplicações em jogos, trabalho remoto e reabilitação neurológica.</p>
+
+        <strong>Como funciona a tecnologia?</strong><br>
+        <p>A interface cérebro-computador opera por meio da leitura direta dos sinais cerebrais, utilizando eletrodos implantados no córtex motor para captar sinais neurais com alta precisão.</p>
+        <p>O sistema divide a mão do usuário em três partes virtuais, permitindo comandos mais detalhados e controle avançado. Em comparação com abordagens não invasivas, como EEG, esse método se mostrou seis vezes mais eficiente.</p>
+
+        <strong>Futuro da interface cérebro-computador</strong><br>
+        <p>O experimento faz parte do BrainGate2, um ensaio clínico que investiga como sinais neurais e aprendizado de máquina podem ajudar pessoas com lesões na medula espinhal.</p>
+        <p>Os pesquisadores acreditam que essa tecnologia pode evoluir para controlar softwares complexos, como programas de design e composição musical. Além de restaurar funções motoras, a inovação também busca melhorar a qualidade de vida dos usuários, permitindo maior interação social e acesso ao lazer.</p>
+    </div>
+</div>
+
+<!-- Modal 9 -->
+<div id="modal9" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Empresas de Tecnologia Perdem US$ 1 Trilhão com Ascensão do DeepSeek</h2>
+        <img src="https://s2-g1.glbimg.com/ewxai-f56CoLPTngSg7F__FZoIA=/0x0:3000x2000/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2025/P/F/WKUU8VRDqAcz3KW0v9Cw/2025-01-27t125916z-1824444031-rc2cicawpv3t-rtrmadp-3-deepseek-markets.jpg" alt="Imagem representativa sobre o impacto do DeepSeek no mercado financeiro">
+        
+        <p>O impacto do DeepSeek, novo modelo de inteligência artificial da China, gerou uma queda de US$ 1 trilhão no valor de mercado das big techs dos Estados Unidos e Europa. A startup chinesa superou o ChatGPT na App Store e ganhou popularidade ao oferecer uma IA mais eficiente e acessível.</p>
+
+        <strong>As maiores perdas no mercado</strong><br>
+        <p>As principais empresas de tecnologia registraram perdas significativas:</p>
+        <ul>
+            <li><strong>Nvidia</strong> – Registrou uma queda recorde de US$ 620 bilhões, encerrando o pregão com perda de 16,9%.</li>
+            <li><strong>Oracle</strong> – Desvalorização de 13,79%.</li>
+            <li><strong>Alphabet (Google)</strong> – Recuo de 4,03%.</li>
+            <li><strong>Microsoft</strong> – Baixa de 2,14%.</li>
+            <li><strong>Meta</strong> – Apesar do impacto inicial, fechou com leve alta de 1,91%.</li>
+        </ul>
+        <p>O índice Nasdaq caiu 3,07%, refletindo o receio dos investidores sobre o futuro da inteligência artificial nos EUA.</p>
+
+        <strong>Por que o DeepSeek gerou essa turbulência?</strong><br>
+        <p>A DeepSeek alegou que seu modelo foi treinado por apenas US$ 6 milhões, um valor muito inferior ao investimento das empresas ocidentais, como OpenAI e Meta, que gastam bilhões de dólares no setor.</p>
+        <p>Além disso, as restrições dos EUA à exportação de chips para a China não impediram a startup de desenvolver um sistema competitivo. Isso levantou dúvidas sobre a hegemonia americana na inteligência artificial e a eficácia dos bloqueios tecnológicos de Washington.</p>
+
+        <strong>O futuro da disputa global pela IA</strong><br>
+        <p>Analistas avaliam que o DeepSeek pode levar a uma reavaliação do mercado de IA, forçando empresas ocidentais a repensar custos e estratégias. O avanço chinês sugere uma mudança de poder no setor, tornando a disputa pela liderança da inteligência artificial ainda mais intensa.</p>
+    </div>
+</div>
+
+<!-- Modal 10 -->
+<div id="modal10" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>DeepSeek Sofre Ciberataque e Limita Novos Cadastros Após Explosão de Popularidade</h2>
+        <img src="https://lifehacker.com/imagery/articles/01JJW20QN9Z1ZZ11ZRQJZSKFSX/hero-image.fill.size_1248x702.v1738258482.jpg" alt="Imagem representativa sobre o ciberataque sofrido pela DeepSeek">
+        
+        <p>A DeepSeek, startup chinesa que vem desafiando gigantes da inteligência artificial, anunciou que sofreu um ciberataque em larga escala e, como medida de precaução, está limitando temporariamente o cadastro de novos usuários.</p>
+        <p>O ataque ocorreu pouco depois do DeepSeek ultrapassar o ChatGPT em downloads na App Store dos EUA, tornando-se o aplicativo gratuito mais bem avaliado na loja da Apple.</p>
+
+        <strong>Impacto no mercado</strong><br>
+        <p>A suspensão temporária de novos cadastros gerou diversas repercussões no setor de tecnologia:</p>
+        <ul>
+            <li><strong>Suspensão de novos cadastros</strong> – A empresa informou que usuários já registrados podem acessar normalmente, mas novos cadastros podem enfrentar instabilidade.</li>
+            <li><strong>Queda das big techs</strong> – O crescimento do DeepSeek impactou empresas de IA nos EUA, com a Nvidia perdendo 16,5% de valor de mercado e outras gigantes, como Alphabet e Microsoft, também operando em baixa.</li>
+            <li><strong>Dúvidas sobre custos</strong> – Enquanto a DeepSeek afirma ter treinado seus modelos com menos de US$ 6 milhões, analistas questionam a veracidade desse número e se a tecnologia chinesa pode realmente desestabilizar o setor.</li>
+        </ul>
+
+        <strong>O que vem a seguir?</strong><br>
+        <p>O ataque ocorre em um momento crucial para a startup, que tem chamado a atenção de investidores e especialistas em tecnologia. A DeepSeek já afirmou que continuará sua expansão, mesmo enfrentando desafios de segurança e concorrência global.</p>
+    </div>
+</div>
+
+<!-- Modal 11 -->
+<div id="modal11" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>DeepSeek: IA Chinesa Desafia EUA e Domina o Mercado Global</h2>
+        <img src="https://midias.em.com.br/_midias/jpg/2025/01/28/2b4d01b0_dcd0_11ef_a37f_eba91255dc3d-45440150.jpg" alt="Imagem representativa sobre o impacto global do DeepSeek">
+        
+        <p>O DeepSeek, assistente de inteligência artificial da China, continua causando impacto mundial. Após ultrapassar o ChatGPT em downloads nos EUA e abalar o mercado financeiro, a IA chinesa levanta debates sobre a liderança americana no setor de IA e o futuro da tecnologia global.</p>
+
+        <strong>Por que o DeepSeek se tornou uma ameaça para os EUA?</strong><br>
+        <p>Diversos fatores contribuíram para que o DeepSeek fosse considerado uma ameaça estratégica:</p>
+        <ul>
+            <li><strong>Baixo custo de desenvolvimento</strong> – Segundo a DeepSeek, o modelo foi treinado com apenas US$ 6 milhões, enquanto empresas como OpenAI e Google investem centenas de milhões de dólares.</li>
+            <li><strong>Tecnologia avançada</strong> – O chatbot mostra o processo de raciocínio antes de responder, algo que o diferencia dos concorrentes.</li>
+            <li><strong>Impacto financeiro</strong> – O crescimento do DeepSeek causou a perda de US$ 1 trilhão em valor de mercado das big techs e levou os EUA a analisarem implicações para a segurança nacional.</li>
+            <li><strong>Restrições americanas</strong> – Apesar dos bloqueios de chips de IA impostos pelos EUA, a startup chinesa conseguiu desenvolver uma tecnologia competitiva.</li>
+        </ul>
+
+        <strong>DeepSeek vs. ChatGPT: qual é melhor?</strong><br>
+        <p>Especialistas apontam que, no momento, o DeepSeek e o ChatGPT oferecem desempenho semelhante. No entanto, a IA chinesa se destaca em problemas matemáticos e raciocínio lógico, enquanto o ChatGPT mantém vantagem em análise de imagens.</p>
+        <p>Outro ponto de atenção é a autocensura do DeepSeek, que evita responder sobre questões políticas sensíveis à China.</p>
+
+        <strong>O que esperar do futuro?</strong><br>
+        <p>Com a inteligência artificial se tornando um elemento estratégico global, a disputa entre China e EUA deve se intensificar. Enquanto o DeepSeek continua crescendo rapidamente, empresas ocidentais precisarão adaptar suas estratégias para se manterem competitivas.</p>
+    </div>
+</div>
+
+<!-- Modal 12 -->
+<div id="modal12" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>OpenAI Acusa DeepSeek de Usar Ilegalmente Dados do ChatGPT</h2>
+        <img src="https://s2-g1.glbimg.com/JL_2elnBQX_ae3FdyCAoCUwcM3Q=/0x0:1024x682/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2025/s/j/EgWB8rQ8aFB42mBVVhbQ/000-36wh6xl.jpg" alt="Imagem representativa sobre a disputa entre OpenAI e DeepSeek">
+        
+        <p>A OpenAI alegou ter evidências de que o DeepSeek utilizou dados do ChatGPT para treinar sua inteligência artificial sem autorização. Segundo a empresa, a startup chinesa teria recorrido a uma técnica conhecida como “destilação”, que extrai informações de grandes modelos de IA para otimizar modelos menores.</p>
+
+        <strong>Investigação e possíveis implicações</strong><br>
+        <p>O caso levantou preocupações no setor de tecnologia, levando a investigações formais:</p>
+        <ul>
+            <li><strong>Microsoft e OpenAI</strong> – Ambas as empresas iniciaram uma investigação para apurar um possível vazamento de informações e roubo de propriedade intelectual.</li>
+            <li><strong>Casa Branca monitora o caso</strong> – Autoridades americanas acompanham de perto a situação, analisando a possibilidade de uso indevido de tecnologia dos EUA.</li>
+            <li><strong>DeepSeek nega irregularidades</strong> – Até o momento, a startup chinesa não comentou oficialmente sobre as acusações.</li>
+        </ul>
+
+        <strong>Disputa crescente na inteligência artificial</strong><br>
+        <p>O caso surge em meio ao crescimento meteórico do DeepSeek, que ultrapassou o ChatGPT na App Store dos EUA e causou um impacto financeiro bilionário no setor de IA.</p>
+        <p>Com as investigações em andamento, a disputa entre EUA e China na corrida pela inteligência artificial se intensifica, levantando questões sobre ética, segurança de dados e propriedade intelectual.</p>
+    </div>
+</div>
+
+<!-- Modal 13 -->
+<div id="modal13" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Estudo Indica que Músicas Estão Ficando Menos Complexas ao Longo do Tempo</h2>
+        <img src="https://img.odcdn.com.br/wp-content/uploads/2025/01/msicas-1920x1080.jpg" alt="Imagem representativa sobre a análise da complexidade musical">
+        
+        <p>Pesquisadores das universidades Sapienza de Roma e Pádua usaram técnicas de ciência de rede para analisar a complexidade musical ao longo dos séculos. O estudo revelou uma tendência de simplificação nas canções, mesmo em gêneros tradicionalmente complexos, como jazz e música clássica.</p>
+
+        <strong>Como foi feita a análise?</strong><br>
+        <p>Os pesquisadores aplicaram conceitos de ciência de rede para mapear padrões musicais:</p>
+        <ul>
+            <li>Cada nota foi tratada como um nó em uma rede, conectando-se a outras conforme a sequência da música.</li>
+            <li>A complexidade foi medida pela diversidade de padrões e transições entre notas.</li>
+            <li>Foram analisadas cerca de 20 mil músicas de seis gêneros diferentes, abrangendo quatro séculos de história.</li>
+        </ul>
+        <p>Os resultados confirmaram que a música clássica e o jazz são os gêneros mais complexos, mas também vêm sofrendo simplificação gradual ao longo do tempo.</p>
+
+        <strong>Por que as músicas estão se tornando mais simples?</strong><br>
+        <p>Os cientistas não chegaram a uma conclusão definitiva, mas sugerem que avanços tecnológicos na produção musical permitiram a participação de mais pessoas na criação de músicas, o que pode ter influenciado a estrutura das composições.</p>
+    </div>
+</div>
+
+<!-- Modal 14 -->
+<div id="modal14" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Celulares nas Escolas: Distração ou Ferramenta Pedagógica?</h2>
+        <img src="https://s2-oglobo.glbimg.com/crTIHP_AG8tPV2moE2NuJo6Xub8=/1200x/smart/filters:cover():strip_icc()/i.s3.glbimg.com/v1/AUTH_da025474c0c44edd99332dddb09cabe8/internal_photos/bs/2024/O/l/HSAyvfSEGvcjYwP64W0w/105278809.jpg" alt="Imagem representativa sobre o uso de celulares nas escolas">
+        
+        <p>A discussão sobre o uso de celulares nas escolas tem gerado debates entre educadores, pais e gestores públicos. Com a recente lei sancionada no Brasil restringindo o uso dos dispositivos em sala de aula, surgem questionamentos sobre os impactos dessa medida na aprendizagem e no comportamento dos alunos.</p>
+
+        <strong>Os desafios do celular em sala de aula</strong><br>
+        <p>Professores relatam dificuldades no ensino devido ao uso excessivo dos celulares:</p>
+        <ul>
+            <li><strong>Dificuldade de concentração</strong> – Alunos estão cada vez mais distraídos, com menor interesse em leituras longas e dificuldades na escrita.</li>
+            <li><strong>Impacto social e emocional</strong> – O uso excessivo de celulares tem sido associado ao aumento da violência escolar e do cyberbullying.</li>
+            <li><strong>Conflito em sala de aula</strong> – Educadores precisam constantemente pedir para os alunos guardarem os dispositivos, dificultando o andamento das aulas.</li>
+        </ul>
+
+        <strong>Celular como ferramenta pedagógica: é possível?</strong><br>
+        <p>A nova legislação permite o uso do celular para fins didáticos, desde que sob orientação dos professores. Especialistas defendem que, com mediação adequada e treinamento para os docentes, os dispositivos podem ser aliados no processo educacional.</p>
+        <ul>
+            <li><strong>Pesquisa e aprendizado digital</strong> – O celular pode ser usado para acessar conteúdos complementares e desenvolver habilidades tecnológicas.</li>
+            <li><strong>Atividades interativas</strong> – Aplicativos educacionais podem tornar o ensino mais dinâmico e atrativo.</li>
+            <li><strong>Inclusão digital</strong> – Em algumas regiões, o celular é a única ferramenta de acesso à internet para os alunos.</li>
+        </ul>
+
+        <strong>Resultados da restrição do celular nas escolas</strong><br>
+        <p>As escolas que já adotaram a proibição relatam mudanças significativas:</p>
+        <ul>
+            <li><strong>Queda no cyberbullying</strong> – Algumas instituições observaram redução de conflitos e melhora na interação social entre os alunos.</li>
+            <li><strong>Melhoria no desempenho escolar</strong> – Estudos iniciais indicam que a concentração dos estudantes aumentou, refletindo positivamente no aprendizado.</li>
+        </ul>
+
+        <strong>O desafio do equilíbrio</strong><br>
+        <p>O desafio agora é encontrar o equilíbrio entre a proibição e o uso pedagógico dos celulares para um ensino mais eficaz.</p>
+    </div>
+</div>
+
+<!-- Modal 15 -->
+<div id="modal15" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Registro de Íris por Criptomoedas: World Mantém Pagamentos Mesmo Após Proibição da ANPD</h2>
+        <img src="https://www.criptonoticias.com/wp-content/uploads/2023/07/riesgo-escanear-ojo-worldcoin-750x375.jpg" alt="Imagem representativa sobre a coleta de íris e criptomoedas">
+        
+        <p>A World, empresa que coleta dados biométricos da íris em troca de criptomoedas, continua operando no Brasil mesmo após a proibição da Autoridade Nacional de Proteção de Dados (ANPD). A medida, em vigor desde o dia 25 de janeiro, suspende os pagamentos para evitar que a compensação financeira influencie a decisão dos usuários.</p>
+
+        <strong>O que está acontecendo?</strong><br>
+        <p>A controvérsia envolve a continuidade da operação da World no país:</p>
+        <ul>
+            <li><strong>Continuação dos pagamentos</strong> – Usuários que se cadastraram após a proibição relataram que ainda receberam a promessa de pagamento.</li>
+            <li><strong>Recurso da World</strong> – A empresa recorreu da decisão, o que suspende temporariamente a proibição até a análise da ANPD.</li>
+            <li><strong>Possíveis sanções</strong> – Caso a World seja considerada em descumprimento das normas da LGPD, pode sofrer advertências, multas e até bloqueio dos dados coletados.</li>
+        </ul>
+
+        <strong>Por que a ANPD suspendeu os pagamentos?</strong><br>
+        <p>A autoridade reguladora argumenta que dados biométricos são informações sensíveis e que o pagamento pode comprometer o consentimento livre dos usuários, principalmente entre grupos vulneráveis.</p>
+        <p>A empresa se defende, alegando que está em conformidade com a legislação brasileira e que a coleta da íris ajuda a diferenciar humanos de robôs na internet.</p>
+
+        <strong>O que esperar nos próximos dias?</strong><br>
+        <p>Com o recurso em análise, a decisão final da ANPD pode mudar o futuro da operação da World no Brasil. Enquanto isso, especialistas alertam sobre riscos à privacidade e segurança dos dados.</p>
+    </div>
+</div>
+
+  
+
+  <!-- Rodapé -->
+  <footer>
+    <p>&copy; 2024 - 2025</p>
+  </footer>
+
+  <!-- Scripts para Modais -->
+  <script>
+    // Seleciona todos os cartões, modais e botões de fechamento
+    const cards = document.querySelectorAll('.card');
+    const modals = document.querySelectorAll('.modal');
+    const closes = document.querySelectorAll('.close');
+
+    // Verifica se a quantidade de cartões e modais corresponde
+    if (cards.length !== modals.length) {
+      console.warn("O número de cartões não corresponde ao número de modais. Verifique seu HTML.");
+    }
+
+    // Adiciona evento de clique aos cartões para abrir o modal correspondente
+    cards.forEach((card, index) => {
+      card.addEventListener('click', () => {
+        if (modals[index]) {
+          modals[index].style.display = 'block'; // Exibe o modal correspondente
+        } else {
+          console.error(`Nenhum modal encontrado para o card com índice ${index}. Verifique o HTML.`);
+        }
+      });
+    });
+
+    // Adiciona evento de clique aos botões de fechamento para fechar o modal correspondente
+    closes.forEach((close, index) => {
+      close.addEventListener('click', () => {
+        if (modals[index]) {
+          modals[index].style.display = 'none'; // Esconde o modal correspondente
+        } else {
+          console.error(`Nenhum modal encontrado para o botão de fechamento com índice ${index}. Verifique o HTML.`);
+        }
+      });
+    });
+
+    // Adiciona funcionalidade para fechar o modal ao clicar fora dele
+    window.onclick = function (event) {
+      modals.forEach((modal) => {
+        if (event.target === modal) {
+          modal.style.display = 'none'; // Esconde o modal se o clique for fora do conteúdo
+        }
+      });
+    };
+
+    // Adiciona acessibilidade: fecha o modal ao pressionar a tecla ESC
+    window.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') { // Detecta a tecla ESC
+        modals.forEach((modal) => {
+          modal.style.display = 'none'; // Esconde todos os modais abertos
+        });
+      }
+    });
+  </script>
+</body>
+</html>
